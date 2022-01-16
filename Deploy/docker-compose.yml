@@ -11,7 +11,7 @@ services:
     container_name: app_02
     working_dir: /var/www
     ports: 
-        - 82:82
+        - 80:80
     networks:
         - app02net
     volumes:
