@@ -78,8 +78,8 @@ RUN  chown -R $user:$user /var/log/nginx
 RUN  chown -R $user:$user /var/run/php-fpm
 
 #
-COPY ./gcloud_sdk/google-cloud-sdk.repo /etc/yum.repos.d/
-RUN  yum install google-cloud-sdk -y
+# COPY ./gcloud_sdk/google-cloud-sdk.repo /etc/yum.repos.d/
+# RUN  yum install google-cloud-sdk -y
 #
 
 CMD ["supervisord", "-c" ,"/etc/supervisord.conf"]
