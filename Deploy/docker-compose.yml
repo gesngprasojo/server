@@ -1,0 +1,47 @@
+version: "3.7"
+services:  
+  app_02:
+    build: 
+        args: 
+          user: app
+          uid: 1000
+        context: .
+        dockerfile: ./Dockerfile
+    image: namedockerhub/app_02:latest
+    container_name: app_02
+    working_dir: /var/www
+    ports: 
+        - 82:82
+    networks:
+        - app02net
+    volumes:
+        - ./php/www.conf:/etc/php-fpm.d/www.conf
+        - ./supervisord/config.d/supervisord.conf:/etc/supervisord.conf
+        - ./supervisord/run.d:/etc/supervisor/run.d
+        - ./nginx/config/nginx.conf:/etc/nginx/nginx.conf
+        - ./nginx/serverblock:/etc/nginx/serverblock
+        - ./gcloud_sdk/conf/gcloud:/root/.config/gcloud
+        - ./../App/Background:/home/app/Background
+        - ./../App/Dash:/home/app/Dash
+        - ./../App/Web:/home/app/Web
+    restart: always
+  db_app_02:
+    image: mariadb:latest
+    container_name: db_app_02
+    environment:
+      MYSQL_DATABASE: db_app_02
+      MYSQL_ROOT_PASSWORD: 2134
+      MYSQL_PASSWORD: 2134
+      MYSQL_USER: app
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+        - ./mysql:/var/lib/mysql
+    restart: always
+    ports: 
+        - 23740:3306
+    networks:
+        - app02net
+networks:
+  app02net:
+    driver: bridge
